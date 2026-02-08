@@ -4,8 +4,9 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(135deg, #0a0a0f 0%, #12121a 100%);
-    color: #e4e4e7;
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    color: var(--text-primary);
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 .header {
@@ -13,8 +14,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-header);
     backdrop-filter: blur(10px);
 }
 
@@ -28,11 +29,17 @@
     margin: 0;
 }
 
+.headerControls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
 .statusBar {
     display: flex;
     gap: 1.5rem;
     font-size: 0.875rem;
-    color: #a1a1aa;
+    color: var(--text-secondary);
 }
 
 .statusItem {
@@ -58,6 +65,31 @@
     box-shadow: 0 0 8px #ef4444;
 }
 
+/* Theme Toggle Button */
+.themeToggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1.25rem;
+}
+
+.themeToggle:hover {
+    background: var(--border-color);
+    transform: scale(1.05);
+}
+
+.themeToggle:active {
+    transform: scale(0.95);
+}
+
 .main {
     flex: 1;
     display: flex;
@@ -71,13 +103,15 @@
     max-width: 1200px;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px -12px var(--shadow-color);
+    border: 1px solid var(--border-color);
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .canvas {
     width: 100%;
     height: auto;
     display: block;
-    background: #0d0d12;
+    background: var(--canvas-bg);
+    transition: background 0.3s ease;
 }

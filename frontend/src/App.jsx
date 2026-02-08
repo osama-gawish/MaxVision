@@ -5,6 +5,20 @@ function App() {
   const canvasRef = useRef(null)
   const [status, setStatus] = useState('Initializing...')
   const [wsConnected, setWsConnected] = useState(false)
+  const [theme, setTheme] = useState(() => {
+    // Get saved theme or default to dark
+    return localStorage.getItem('theme') || 'dark'
+  })
+
+  // Apply theme to document
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+    localStorage.setItem('theme', theme)
+  }, [theme])
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark')
+  }
 
   useEffect(() => {
     // Initialize WebGPU
@@ -80,12 +94,22 @@ function App() {
     <div className={styles.dashboard}>
       <header className={styles.header}>
         <h1 className={styles.title}>MaxVision</h1>
-        <div className={styles.statusBar}>
-          <span className={styles.statusItem}>
-            <span className={wsConnected ? styles.statusDotConnected : styles.statusDotDisconnected} />
-            WebSocket: {wsConnected ? 'Connected' : 'Disconnected'}
-          </span>
-          <span className={styles.statusItem}>{status}</span>
+        <div className={styles.headerControls}>
+          <div className={styles.statusBar}>
+            <span className={styles.statusItem}>
+              <span className={wsConnected ? styles.statusDotConnected : styles.statusDotDisconnected} />
+              WebSocket: {wsConnected ? 'Connected' : 'Disconnected'}
+            </span>
+            <span className={styles.statusItem}>{status}</span>
+          </div>
+          <button
+            className={styles.themeToggle}
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          >
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </button>
         </div>
       </header>
 
