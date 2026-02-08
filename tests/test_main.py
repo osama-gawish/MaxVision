@@ -16,7 +16,14 @@ def test_index_returns_200(client):
     assert response.status_code == 200
 
 
-def test_index_contains_title(client):
-    """Test that the index page contains the expected title."""
+def test_index_returns_html(client):
+    """Test that the index page returns HTML content."""
     response = client.get("/")
-    assert "MaxVision" in response.text
+    assert "text/html" in response.headers.get("content-type", "")
+
+
+def test_static_assets_accessible(client):
+    """Test that static assets from React build are accessible."""
+    # The assets directory should exist after build
+    response = client.get("/vite.svg")
+    assert response.status_code == 200

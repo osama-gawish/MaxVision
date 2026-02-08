@@ -1,0 +1,83 @@
+/* Dashboard Styles */
+
+.dashboard {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, #0a0a0f 0%, #12121a 100%);
+    color: #e4e4e7;
+}
+
+.header {
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #6366f1, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+}
+
+.statusBar {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.875rem;
+    color: #a1a1aa;
+}
+
+.statusItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.statusDotConnected,
+.statusDotDisconnected {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.statusDotConnected {
+    background: #22c55e;
+    box-shadow: 0 0 8px #22c55e;
+}
+
+.statusDotDisconnected {
+    background: #ef4444;
+    box-shadow: 0 0 8px #ef4444;
+}
+
+.main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.canvasContainer {
+    width: 100%;
+    max-width: 1200px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.canvas {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: #0d0d12;
+}
