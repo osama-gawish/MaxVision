@@ -1,6 +1,7 @@
 .statusBar {
     display: flex;
-    gap: 1.5rem;
+    flex-direction: column;
+    gap: 0.75rem;
     font-size: 0.875rem;
     color: var(--text-secondary);
 }
@@ -9,6 +10,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    padding: 0.5rem 0;
 }
 
 .statusDotConnected,
@@ -16,6 +18,7 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
+    flex-shrink: 0;
 }
 
 .statusDotConnected {

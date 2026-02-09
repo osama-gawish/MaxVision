@@ -3,7 +3,8 @@
 .dashboard {
     min-height: 100vh;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    /* Horizontal layout: sidebar + main */
     background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
     color: var(--text-primary);
     transition: background 0.3s ease, color 0.3s ease;
@@ -15,4 +16,5 @@
     align-items: center;
     justify-content: center;
     padding: 2rem;
+    overflow: auto;
 }
