@@ -67,6 +67,34 @@ function App() {
 
       <main className={styles.main}>
         <Canvas onStatusChange={handleGpuStatusChange} />
+
+        {/* 2x2 Grid: Defects Thumbnails + Graphs */}
+        <div className={styles.panelsGrid}>
+          <div className={styles.panel}>
+            <div className={styles.panelTitle}>Defects Thumbnails</div>
+            <div className={styles.panelContent}>
+              <p>Defect images will appear here</p>
+            </div>
+          </div>
+          <div className={styles.panel}>
+            <div className={styles.panelTitle}>Graph 1</div>
+            <div className={styles.panelContent}>
+              <p>Graph 1 content</p>
+            </div>
+          </div>
+          <div className={styles.panel}>
+            <div className={styles.panelTitle}>Graph 2</div>
+            <div className={styles.panelContent}>
+              <p>Graph 2 content</p>
+            </div>
+          </div>
+          <div className={styles.panel}>
+            <div className={styles.panelTitle}>Graph 3</div>
+            <div className={styles.panelContent}>
+              <p>Graph 3 content</p>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   )
