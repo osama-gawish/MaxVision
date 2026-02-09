@@ -1,4 +1,4 @@
-/* Dashboard Styles */
+/* Dashboard Layout Styles */
 
 .dashboard {
     min-height: 100vh;
@@ -9,109 +9,10 @@
     transition: background 0.3s ease, color 0.3s ease;
 }
 
-.header {
-    padding: 1.5rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--border-color);
-    background: var(--bg-header);
-    backdrop-filter: blur(10px);
-}
-
-.title {
-    font-size: 1.75rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, #6366f1, #818cf8);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin: 0;
-}
-
-.headerControls {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.statusBar {
-    display: flex;
-    gap: 1.5rem;
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-}
-
-.statusItem {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.statusDotConnected,
-.statusDotDisconnected {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-}
-
-.statusDotConnected {
-    background: #22c55e;
-    box-shadow: 0 0 8px #22c55e;
-}
-
-.statusDotDisconnected {
-    background: #ef4444;
-    box-shadow: 0 0 8px #ef4444;
-}
-
-/* Theme Toggle Button */
-.themeToggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border: none;
-    border-radius: 10px;
-    background: var(--bg-secondary);
-    color: var(--text-primary);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-size: 1.25rem;
-}
-
-.themeToggle:hover {
-    background: var(--border-color);
-    transform: scale(1.05);
-}
-
-.themeToggle:active {
-    transform: scale(0.95);
-}
-
 .main {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 2rem;
-}
-
-.canvasContainer {
-    width: 100%;
-    max-width: 1200px;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 25px 50px -12px var(--shadow-color);
-    border: 1px solid var(--border-color);
-    transition: box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.canvas {
-    width: 100%;
-    height: auto;
-    display: block;
-    background: var(--canvas-bg);
-    transition: background 0.3s ease;
 }

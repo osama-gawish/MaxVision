@@ -1,0 +1,29 @@
+.statusBar {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.statusItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.statusDotConnected,
+.statusDotDisconnected {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.statusDotConnected {
+    background: #22c55e;
+    box-shadow: 0 0 8px #22c55e;
+}
+
+.statusDotDisconnected {
+    background: #ef4444;
+    box-shadow: 0 0 8px #ef4444;
+}

@@ -1,0 +1,17 @@
+.canvasContainer {
+    width: 100%;
+    max-width: 1200px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px var(--shadow-color);
+    border: 1px solid var(--border-color);
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.canvas {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: var(--canvas-bg);
+    transition: background 0.3s ease;
+}

@@ -1,0 +1,23 @@
+.themeToggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1.25rem;
+}
+
+.themeToggle:hover {
+    background: var(--border-color);
+    transform: scale(1.05);
+}
+
+.themeToggle:active {
+    transform: scale(0.95);
+}
