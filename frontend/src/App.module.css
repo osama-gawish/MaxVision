@@ -4,10 +4,19 @@
     min-height: 100vh;
     display: flex;
     flex-direction: row;
-    /* Horizontal layout: sidebar + main */
     background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
     color: var(--text-primary);
     transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Secondary sidebar for Roll Info + Filter */
+.infoPanel {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-color);
+    background: var(--bg-header);
+    backdrop-filter: blur(10px);
 }
 
 .main {

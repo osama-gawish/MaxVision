@@ -1,0 +1,25 @@
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background: var(--bg-header);
+    border-right: 1px solid var(--border-color);
+    backdrop-filter: blur(10px);
+}
+
+.title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    margin: 0 0 0.75rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.content {
+    flex: 1;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+}

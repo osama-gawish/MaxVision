@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
-import { Header, Canvas } from './components'
+import { Header, Canvas, Sidebar } from './components'
 import styles from './App.module.css'
 
 function App() {
@@ -54,6 +54,17 @@ function App() {
         theme={theme}
         onThemeToggle={toggleTheme}
       />
+
+      {/* Info Panel: Roll Info + Filter */}
+      <div className={styles.infoPanel}>
+        <Sidebar title="Roll Info">
+          <p>Roll data will appear here</p>
+        </Sidebar>
+        <Sidebar title="Filter">
+          <p>Filter options will appear here</p>
+        </Sidebar>
+      </div>
+
       <main className={styles.main}>
         <Canvas onStatusChange={handleGpuStatusChange} />
       </main>
