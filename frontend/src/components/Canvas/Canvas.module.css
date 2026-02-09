@@ -1,17 +1,18 @@
 .canvasContainer {
-    width: 100%;
-    max-width: 1200px;
-    border-radius: 16px;
+    width: 50%;
+    height: 100%;
+    border-radius: 0;
     overflow: hidden;
-    box-shadow: 0 25px 50px -12px var(--shadow-color);
-    border: 1px solid var(--border-color);
-    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    box-shadow: 5px 0 15px -5px var(--shadow-color);
+    border-right: 1px solid var(--border-color);
+    transition: width 0.3s ease;
+    background: var(--canvas-bg);
+    position: relative;
 }
 
 .canvas {
     width: 100%;
-    height: auto;
+    height: 100%;
     display: block;
-    background: var(--canvas-bg);
-    transition: background 0.3s ease;
+    object-fit: contain;
 }
