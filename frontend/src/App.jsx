@@ -5,6 +5,7 @@ import styles from './App.module.css'
 function App() {
   const [gpuStatus, setGpuStatus] = useState('Initializing...')
   const [wsConnected, setWsConnected] = useState(false)
+  const [recording, setRecording] = useState(false)
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('theme') || 'dark'
   })
@@ -21,6 +22,10 @@ function App() {
 
   const handleGpuStatusChange = useCallback((status) => {
     setGpuStatus(status)
+  }, [])
+
+  const toggleRecording = useCallback(() => {
+    setRecording(prev => !prev)
   }, [])
 
   // WebSocket connection
@@ -53,6 +58,8 @@ function App() {
         gpuStatus={gpuStatus}
         theme={theme}
         onThemeToggle={toggleTheme}
+        recording={recording}
+        onRecordingToggle={toggleRecording}
       />
 
       {/* Info Panel: Roll Info + Filter */}

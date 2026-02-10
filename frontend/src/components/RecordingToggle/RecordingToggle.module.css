@@ -1,0 +1,55 @@
+.recordingToggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.8rem;
+    font-weight: 500;
+    width: 100%;
+    justify-content: center;
+}
+
+.recordingToggle:hover {
+    background: var(--border-color);
+    transform: scale(1.02);
+}
+
+.recordingToggle:active {
+    transform: scale(0.97);
+}
+
+.recordingToggle.active {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+.indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--text-secondary);
+    transition: background 0.2s ease;
+    flex-shrink: 0;
+}
+
+.active .indicator {
+    background: #ef4444;
+    animation: pulse 1.2s ease-in-out infinite;
+    box-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+.label {
+    white-space: nowrap;
+}
