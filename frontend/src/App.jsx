@@ -6,6 +6,7 @@ function App() {
   const [gpuStatus, setGpuStatus] = useState('Initializing...')
   const [wsConnected, setWsConnected] = useState(false)
   const [recording, setRecording] = useState(false)
+  const [frequency, setFrequency] = useState(0)
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('theme') || 'dark'
   })
@@ -24,31 +25,16 @@ function App() {
     setGpuStatus(status)
   }, [])
 
-  const toggleRecording = useCallback(() => {
-    setRecording(prev => !prev)
+  const handleWsStatusChange = useCallback((connected) => {
+    setWsConnected(connected)
   }, [])
 
-  // WebSocket connection
-  useEffect(() => {
-    const wsUrl = `ws://${window.location.host}/ws/stream`
-    let ws = null
+  const handleFrequencyChange = useCallback((value) => {
+    setFrequency(value)
+  }, [])
 
-    function connect() {
-      ws = new WebSocket(wsUrl)
-
-      ws.onopen = () => setWsConnected(true)
-      ws.onclose = () => {
-        setWsConnected(false)
-        setTimeout(connect, 2000)
-      }
-      ws.onerror = () => setWsConnected(false)
-      ws.onmessage = (event) => {
-        console.log('Received:', event.data)
-      }
-    }
-
-    connect()
-    return () => { if (ws) ws.close() }
+  const toggleRecording = useCallback(() => {
+    setRecording(prev => !prev)
   }, [])
 
   return (
@@ -56,6 +42,7 @@ function App() {
       <Header
         wsConnected={wsConnected}
         gpuStatus={gpuStatus}
+        frequency={frequency}
         theme={theme}
         onThemeToggle={toggleTheme}
         recording={recording}
@@ -73,7 +60,12 @@ function App() {
       </div>
 
       <main className={styles.main}>
-        <Canvas onStatusChange={handleGpuStatusChange} />
+        <Canvas
+          recording={recording}
+          onStatusChange={handleGpuStatusChange}
+          onWsStatusChange={handleWsStatusChange}
+          onFrequencyChange={handleFrequencyChange}
+        />
 
         {/* 2x2 Grid: Defects Thumbnails + Graphs */}
         <div className={styles.panelsGrid}>

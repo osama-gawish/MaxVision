@@ -1,41 +1,65 @@
+import asyncio
+import contextlib
+import json
+
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
+from app.services import line_scan
+
 router = APIRouter(prefix="/ws", tags=["websocket"])
-
-
-class ConnectionManager:
-    """Manages WebSocket connections."""
-    
-    def __init__(self):
-        self.active_connections: list[WebSocket] = []
-    
-    async def connect(self, websocket: WebSocket):
-        await websocket.accept()
-        self.active_connections.append(websocket)
-    
-    def disconnect(self, websocket: WebSocket):
-        self.active_connections.remove(websocket)
-    
-    async def send_bytes(self, data: bytes, websocket: WebSocket):
-        await websocket.send_bytes(data)
-    
-    async def broadcast_bytes(self, data: bytes):
-        for connection in self.active_connections:
-            await connection.send_bytes(data)
-
-
-manager = ConnectionManager()
 
 
 @router.websocket("/stream")
 async def websocket_stream(websocket: WebSocket):
     """WebSocket endpoint for streaming data."""
-    await manager.connect(websocket)
+    await websocket.accept()
+    stream_task = None
+    stop_event = asyncio.Event()
+
+    async def stream_lines():
+        while not stop_event.is_set():
+            line_data, line_index = line_scan.next_line_base64()
+            await websocket.send_json({
+                "type": "line",
+                "data": line_data,
+                "lineIndex": line_index,
+            })
+            await asyncio.sleep(0.001)
+
     try:
         while True:
-            # Receive data from client (if needed)
             data = await websocket.receive_text()
-            # Echo back for now - replace with actual logic
-            await websocket.send_text(f"Received: {data}")
+            try:
+                message = json.loads(data)
+            except json.JSONDecodeError:
+                continue
+
+            action = message.get("action")
+            if action == "start":
+                if stream_task is None or stream_task.done():
+                    stop_event.clear()
+                    await websocket.send_json({
+                        "status": "recording",
+                        "message": "Recording started",
+                        "width": line_scan.line_width,
+                        "maxLines": line_scan.MAX_LINES,
+                    })
+                    stream_task = asyncio.create_task(stream_lines())
+            elif action == "stop":
+                stop_event.set()
+                if stream_task is not None:
+                    stream_task.cancel()
+                    with contextlib.suppress(asyncio.CancelledError):
+                        await stream_task
+                await websocket.send_json({
+                    "status": "stopped",
+                    "message": "Recording stopped",
+                })
     except WebSocketDisconnect:
-        manager.disconnect(websocket)
+        pass
+    finally:
+        stop_event.set()
+        if stream_task is not None:
+            stream_task.cancel()
+            with contextlib.suppress(asyncio.CancelledError):
+                await stream_task
