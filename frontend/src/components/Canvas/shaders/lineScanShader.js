@@ -60,6 +60,7 @@ export const shaderCode = `
         }
 
         let adjustedUV = vec2<f32>(uv.x, textureY);
-        return textureSample(myTexture, mySampler, adjustedUV);
+        let gray = textureSample(myTexture, mySampler, adjustedUV).r;
+        return vec4<f32>(gray, gray, gray, 1.0);
     }
 `

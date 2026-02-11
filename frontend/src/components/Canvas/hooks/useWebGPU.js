@@ -128,8 +128,8 @@ export default function useWebGPU(canvasRef, onStatusChange) {
 
         const texture = device.createTexture({
             size: [textureWidthRef.current, maxLinesRef.current],
-            format: 'rgba8unorm',
-            usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST | GPUTextureUsage.RENDER_ATTACHMENT
+            format: 'r8unorm',
+            usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST
         })
 
         const sampler = device.createSampler({

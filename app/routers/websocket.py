@@ -18,12 +18,8 @@ async def websocket_stream(websocket: WebSocket):
 
     async def stream_lines():
         while not stop_event.is_set():
-            line_data, line_index = line_scan.next_line_base64()
-            await websocket.send_json({
-                "type": "line",
-                "data": line_data,
-                "lineIndex": line_index,
-            })
+            line_bytes, line_index = line_scan.next_line_raw()
+            await websocket.send_bytes(line_bytes)
             await asyncio.sleep(0.001)
 
     try:

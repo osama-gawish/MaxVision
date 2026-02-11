@@ -23,6 +23,7 @@ export default function useStreaming({
 
         const wsUrl = `ws://${window.location.host}/ws/stream`
         const ws = new WebSocket(wsUrl)
+        ws.binaryType = 'arraybuffer'
         wsRef.current = ws
 
         ws.onopen = () => {
@@ -32,44 +33,42 @@ export default function useStreaming({
         }
 
         ws.onmessage = async (event) => {
-            let data
-            try {
-                data = JSON.parse(event.data)
-            } catch {
-                return
-            }
+            // JSON text frames = control messages
+            if (typeof event.data === 'string') {
+                let data
+                try {
+                    data = JSON.parse(event.data)
+                } catch {
+                    return
+                }
 
-            if (data.status === 'recording') {
-                const width = Number(data.width)
-                const maxLines = Number.isFinite(Number(data.maxLines)) ? Number(data.maxLines) : DEFAULT_MAX_LINES
-                if (!Number.isFinite(width) || width <= 0) return
+                if (data.status === 'recording') {
+                    const width = Number(data.width)
+                    const maxLines = Number.isFinite(Number(data.maxLines)) ? Number(data.maxLines) : DEFAULT_MAX_LINES
+                    if (!Number.isFinite(width) || width <= 0) return
 
-                if (!gpuRef.current.gpuReady ||
-                    textureWidthRef.current !== width ||
-                    maxLinesRef.current !== maxLines) {
-                    onStatusChange?.('Initializing GPU...')
-                    await initWebGPU(width, maxLines)
+                    if (!gpuRef.current.gpuReady ||
+                        textureWidthRef.current !== width ||
+                        maxLinesRef.current !== maxLines) {
+                        onStatusChange?.('Initializing GPU...')
+                        await initWebGPU(width, maxLines)
+                    }
                 }
                 return
             }
 
-            if (data.type !== 'line' || !data.data) return
+            // Binary frames = raw grayscale pixel data
             if (!gpuRef.current.gpuReady) return
 
-            const response = await fetch(`data:image/png;base64,${data.data}`)
-            const blob = await response.blob()
-            const imgBitmap = await createImageBitmap(blob)
+            const pixels = new Uint8Array(event.data)
 
             const writeRow = currentLineIndexRef.current % maxLinesRef.current
-            gpuRef.current.device.queue.copyExternalImageToTexture(
-                { source: imgBitmap },
+            gpuRef.current.device.queue.writeTexture(
                 { texture: gpuRef.current.texture, origin: [0, writeRow, 0] },
-                [imgBitmap.width, 1]
+                pixels,
+                { bytesPerRow: textureWidthRef.current },
+                [textureWidthRef.current, 1]
             )
-
-            if (typeof imgBitmap.close === 'function') {
-                imgBitmap.close()
-            }
 
             currentLineIndexRef.current += 1
             const headIndex = currentLineIndexRef.current % maxLinesRef.current
