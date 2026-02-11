@@ -42,7 +42,7 @@ async def websocket_stream(websocket: WebSocket):
                         "status": "recording",
                         "message": "Recording started",
                         "width": line_scan.line_width,
-                        "maxLines": line_scan.MAX_LINES,
+                        "maxLines": line_scan.MAX_HEIGHT,
                     })
                     stream_task = asyncio.create_task(stream_lines())
             elif action == "stop":

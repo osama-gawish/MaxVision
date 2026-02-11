@@ -7,6 +7,7 @@ import numpy as np
 
 MAX_WIDTH = 8192
 MAX_LINES = 1200
+MAX_HEIGHT = 8192
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 DEFAULT_IMAGE_PATH = BASE_DIR / "nature-landscape-with-black-sand-beach.jpg"
