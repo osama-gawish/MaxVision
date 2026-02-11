@@ -25,7 +25,3 @@ async def index():
     """Serve the React app's index.html."""
     return FileResponse(STATIC_DIR / "index.html")
 
-
-# Mount static files (assets from React build)
-# This catches all other paths and serves static files
-app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="static")
