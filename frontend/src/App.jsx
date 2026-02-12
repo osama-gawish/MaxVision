@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
-import { Header, Canvas, Sidebar, Panel, RollInfoModal } from './components'
+import { Header, Canvas, Sidebar, Panel, RollInfoModal, DefectCountChart } from './components'
 import styles from './App.module.css'
 
 const DEFAULT_ROLL_INFO = {
@@ -36,8 +36,15 @@ function App() {
     transparency: 50,
   })
 
-  const GRAPH_TABS = ['Graph A', 'Graph B', 'Graph C', 'Graph D']
-  const [activeGraph, setActiveGraph] = useState('Graph A')
+  const GRAPH_TABS = ['Defect Count', 'Graph B', 'Graph C', 'Graph D']
+  const [activeGraph, setActiveGraph] = useState('Defect Count')
+
+  // Defect counts per type (will be updated by detection logic later)
+  const [defectCounts, setDefectCounts] = useState({
+    gel: 12,
+    burn: 5,
+    wrinkle: 8,
+  })
 
   const updateThreshold = useCallback((key, delta) => {
     setThresholds(prev => ({
@@ -191,7 +198,12 @@ function App() {
             activeTab={activeGraph}
             onTabChange={setActiveGraph}
           >
-            <p>{activeGraph} content</p>
+            {activeGraph === 'Defect Count' && (
+              <DefectCountChart defectCounts={defectCounts} />
+            )}
+            {activeGraph !== 'Defect Count' && (
+              <p>{activeGraph} content</p>
+            )}
           </Panel>
         </div>
       </main>
