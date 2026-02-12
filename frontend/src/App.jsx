@@ -9,6 +9,8 @@ const DEFAULT_ROLL_INFO = {
   color: '',
 }
 
+const GRAPH_TABS = ['Defect Count', 'Graph B', 'Graph C', 'Graph D']
+
 function App() {
   const [gpuStatus, setGpuStatus] = useState('Initializing...')
   const [wsConnected, setWsConnected] = useState(false)
@@ -36,7 +38,6 @@ function App() {
     transparency: 50,
   })
 
-  const GRAPH_TABS = ['Defect Count', 'Graph B', 'Graph C', 'Graph D']
   const [activeGraph, setActiveGraph] = useState('Defect Count')
 
   // Defect counts per type (will be updated by detection logic later)
@@ -68,18 +69,6 @@ function App() {
 
   const toggleTheme = useCallback(() => {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark')
-  }, [])
-
-  const handleGpuStatusChange = useCallback((status) => {
-    setGpuStatus(status)
-  }, [])
-
-  const handleWsStatusChange = useCallback((connected) => {
-    setWsConnected(connected)
-  }, [])
-
-  const handleFrequencyChange = useCallback((value) => {
-    setFrequency(value)
   }, [])
 
   const toggleRecording = useCallback(() => {
@@ -178,9 +167,9 @@ function App() {
         <Canvas
           recording={recording}
           onRecordingToggle={toggleRecording}
-          onStatusChange={handleGpuStatusChange}
-          onWsStatusChange={handleWsStatusChange}
-          onFrequencyChange={handleFrequencyChange}
+          onStatusChange={setGpuStatus}
+          onWsStatusChange={setWsConnected}
+          onFrequencyChange={setFrequency}
           frequency={frequency}
         />
 

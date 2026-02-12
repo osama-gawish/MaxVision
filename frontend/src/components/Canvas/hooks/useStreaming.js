@@ -17,6 +17,16 @@ export default function useStreaming({
     const wsRef = useRef(null)
     const lastFrequencyTimeRef = useRef(0)
     const lastFrequencyLineCountRef = useRef(0)
+    const renderPendingRef = useRef(false)
+
+    const scheduleRender = useCallback(() => {
+        if (renderPendingRef.current) return
+        renderPendingRef.current = true
+        requestAnimationFrame(() => {
+            render()
+            renderPendingRef.current = false
+        })
+    }, [render])
 
     const startStreaming = useCallback(() => {
         if (wsRef.current) return
@@ -87,7 +97,7 @@ export default function useStreaming({
                 onFrequencyChange?.(freq)
             }
 
-            requestAnimationFrame(render)
+            scheduleRender()
         }
 
         ws.onclose = () => {
@@ -99,7 +109,7 @@ export default function useStreaming({
         ws.onerror = () => {
             onWsStatusChange?.(false)
         }
-    }, [initWebGPU, onFrequencyChange, onStatusChange, onWsStatusChange, render, updateUniforms, gpuRef, currentLineIndexRef, textureWidthRef, maxLinesRef])
+    }, [initWebGPU, onFrequencyChange, onStatusChange, onWsStatusChange, scheduleRender, updateUniforms, gpuRef, currentLineIndexRef, textureWidthRef, maxLinesRef])
 
     const stopStreaming = useCallback(() => {
         const ws = wsRef.current
