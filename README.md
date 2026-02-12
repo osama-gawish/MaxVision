@@ -11,7 +11,7 @@ A **WebGPU-powered line-scan vision application** for real-time image streaming 
 | **Backend**  | Python 3.14, FastAPI, Uvicorn                     |
 | **Frontend** | React 19, Vite 7                                  |
 | **Rendering**| WebGPU                                            |
-| **Streaming**| WebSocket (`/ws/stream`, JSON + base64 PNG lines) |
+| **Streaming**| WebSocket (`/ws/stream`, binary frames)            |
 | **Vision**   | OpenCV (line-scan preprocessing)                  |
 
 ## Project Structure
@@ -30,6 +30,8 @@ MaxVision/
 |   |   |-- main.jsx            # React entry point
 |   |   `-- components/
 |   |       |-- Canvas/         # WebGPU rendering + zoom/pan
+|   |       |   |-- hooks/      # useWebGPU, useStreaming, useCanvasInteractions
+|   |       |   `-- shaders/    # WGSL shader code
 |   |       |-- Header/         # Top header and controls
 |   |       |-- StatusBar/      # WS/GPU status + frequency
 |   |       |-- RecordingToggle/# Start/Stop recording toggle
@@ -46,7 +48,8 @@ MaxVision/
 
 - React (Vite dev server `:5173`) renders the UI and the WebGPU canvas.
 - The recording toggle opens a WebSocket to FastAPI at `/ws/stream`.
-- FastAPI streams 1-pixel-tall line images, which the canvas writes into a ring-buffer texture.
+- FastAPI streams raw grayscale bytes (1 byte/pixel) as binary WebSocket frames.
+- The frontend writes them directly into an `r8unorm` ring-buffer GPU texture via `writeTexture`.
 - In production, FastAPI serves the built React app from `static/`.
 
 ## Getting Started
@@ -104,13 +107,14 @@ Client -> Server
 - `{"action": "start"}`
 - `{"action": "stop"}`
 
-Server -> Client
+Server -> Client (JSON text frames)
 
-- `{"status":"recording","message":"Recording started","width":<int>,"maxLines":1200}`
+- `{"status":"recording","message":"Recording started","width":<int>,"maxLines":<int>}`
 - `{"status":"stopped","message":"Recording stopped"}`
-- `{"type":"line","data":"<base64 PNG>","lineIndex":<int>}`
 
-Each `line` message contains a 1-pixel-high grayscale PNG row that is written into the WebGPU ring buffer.
+Server -> Client (binary frames)
+
+- Raw grayscale bytes (`width` bytes per frame, 1 byte/pixel) written directly into the WebGPU `r8unorm` ring-buffer texture.
 
 ## Controls
 
@@ -120,10 +124,10 @@ Each `line` message contains a 1-pixel-high grayscale PNG row that is written in
 
 ## Key Features
 
-- **WebGPU Rendering** — hardware-accelerated canvas for line-scan display
-- **Line-Scan Streaming** — server streams 1-pixel rows via WebSocket at `/ws/stream`
+- **WebGPU Rendering** — hardware-accelerated `r8unorm` canvas for grayscale line-scan display
+- **Binary Streaming** — raw grayscale bytes over binary WebSocket, zero encode/decode overhead
 - **Recording Toggle** — UI control to start/stop streaming and rendering
 - **Zoom + Pan** — interactive inspection of the ring-buffer texture
 - **Frequency Indicator** — live lines/sec display in the StatusBar
 - **Dark / Light Theme** — persisted in `localStorage`
-- **Modular Components** — each UI element is a self-contained React component with CSS Modules
+- **Modular Components** — Canvas is composed from custom hooks (`useWebGPU`, `useStreaming`, `useCanvasInteractions`); all UI elements use CSS Modules

@@ -35,3 +35,142 @@
     gap: 1px;
     background: var(--border-color);
 }
+
+/* Roll Info definition list */
+.rollInfoList {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+}
+
+.rollInfoList dt {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.rollInfoList dd {
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.modifyBtn {
+    width: 100%;
+    padding: 0.45rem 0;
+    font-size: 0.75rem;
+    font-weight: 500;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-secondary);
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.modifyBtn:hover {
+    color: var(--text-primary);
+    border-color: var(--text-secondary);
+}
+
+/* Detection filter checklist */
+.filterList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.filterItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    padding: 0.25rem 0;
+}
+
+.filterCheckbox {
+    width: 14px;
+    height: 14px;
+    accent-color: var(--text-secondary);
+    cursor: pointer;
+}
+
+/* Threshold stepper controls */
+.thresholdList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.thresholdItem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.thresholdLabel {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.thresholdStepper {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.stepBtn {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: color 0.15s, background 0.15s;
+    flex-shrink: 0;
+}
+
+.stepBtn:hover {
+    color: var(--text-primary);
+    background: var(--border-color);
+}
+
+.thresholdInput {
+    flex: 1;
+    min-width: 0;
+    height: 28px;
+    padding: 0 0.25rem;
+    font-size: 0.8rem;
+    font-family: inherit;
+    text-align: center;
+    color: var(--text-primary);
+    background: transparent;
+    border: none;
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+    outline: none;
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+.thresholdInput::-webkit-inner-spin-button,
+.thresholdInput::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
