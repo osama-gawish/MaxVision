@@ -5,7 +5,6 @@ import cv2
 import numpy as np
 
 MAX_WIDTH = 8192
-MAX_LINES = 1200
 MAX_HEIGHT = 8192
 
 BASE_DIR = Path(__file__).resolve().parents[2]
@@ -27,7 +26,7 @@ def _load_image():
             return img_gray
 
     # Fallback dummy image
-    return np.zeros((MAX_LINES, MAX_WIDTH), dtype=np.uint8)
+    return np.zeros((1200, MAX_WIDTH), dtype=np.uint8)
 
 
 gray_image = _load_image()
