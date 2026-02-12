@@ -1,4 +1,4 @@
-import StatusBar from '../StatusBar'
+import StatusBar from './StatusBar'
 import ThemeToggle from '../ThemeToggle'
 import styles from './Header.module.css'
 
