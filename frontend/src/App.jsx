@@ -36,6 +36,9 @@ function App() {
     transparency: 50,
   })
 
+  const GRAPH_TABS = ['Graph A', 'Graph B', 'Graph C', 'Graph D']
+  const [activeGraph, setActiveGraph] = useState('Graph A')
+
   const updateThreshold = useCallback((key, delta) => {
     setThresholds(prev => ({
       ...prev,
@@ -175,7 +178,7 @@ function App() {
           onFrequencyChange={handleFrequencyChange}
         />
 
-        {/* 2x2 Grid: Defects Thumbnails + Graphs */}
+        {/* Panels: 2 on top, 1 wide on bottom */}
         <div className={styles.panelsGrid}>
           <Panel title="Defects Thumbnails">
             <p>Defect images will appear here</p>
@@ -183,11 +186,12 @@ function App() {
           <Panel title="Graph 1">
             <p>Graph 1 content</p>
           </Panel>
-          <Panel title="Graph 2">
-            <p>Graph 2 content</p>
-          </Panel>
-          <Panel title="Graph 3">
-            <p>Graph 3 content</p>
+          <Panel
+            tabs={GRAPH_TABS}
+            activeTab={activeGraph}
+            onTabChange={setActiveGraph}
+          >
+            <p>{activeGraph} content</p>
           </Panel>
         </div>
       </main>

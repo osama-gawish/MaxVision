@@ -26,7 +26,7 @@
     position: relative;
 }
 
-/* 2x2 Grid for Defects Thumbnails and Graphs */
+/* Panels: 2 on top, 1 wide on bottom */
 .panelsGrid {
     flex: 1;
     display: grid;
@@ -34,6 +34,10 @@
     grid-template-rows: 1fr 1fr;
     gap: 1px;
     background: var(--border-color);
+}
+
+.panelsGrid>*:last-child {
+    grid-column: 1 / -1;
 }
 
 /* Roll Info definition list */
