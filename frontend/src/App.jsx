@@ -1,5 +1,8 @@
 import { useEffect, useState, useCallback } from 'react'
 import { Header, Canvas, Sidebar, Panel, RollInfoModal, DefectCountChart } from './components'
+import RollInfoSidebar from './components/RollInfoSidebar'
+import DefectsFilter from './components/DefectsFilter'
+import ThresholdControls from './components/ThresholdControls'
 import styles from './App.module.css'
 
 const DEFAULT_ROLL_INFO = {
@@ -92,74 +95,17 @@ function App() {
       {/* Info Panel: Roll Info + Filter */}
       <div className={styles.infoPanel}>
         <Sidebar title="Roll Info">
-          <dl className={styles.rollInfoList}>
-            <dt>Roll ID</dt>
-            <dd>{rollInfo.rollId || '—'}</dd>
-            <dt>Width</dt>
-            <dd>{rollInfo.width ? `${rollInfo.width} mm` : '—'}</dd>
-            <dt>Thickness</dt>
-            <dd>{rollInfo.thickness ? `${rollInfo.thickness} mm` : '—'}</dd>
-            <dt>Color</dt>
-            <dd>{rollInfo.color || '—'}</dd>
-          </dl>
-          <button
-            className={styles.modifyBtn}
-            onClick={() => setShowRollModal(true)}
-          >
-            Modify
-          </button>
+          <RollInfoSidebar rollInfo={rollInfo} onModify={() => setShowRollModal(true)} />
         </Sidebar>
         <Sidebar title="Defects Filter">
-          <div className={styles.filterList}>
-            {Object.entries(detectionFilters).map(([key, checked]) => (
-              <label key={key} className={styles.filterItem}>
-                <input
-                  type="checkbox"
-                  checked={checked}
-                  onChange={() => toggleFilter(key)}
-                  className={styles.filterCheckbox}
-                />
-                {key.charAt(0).toUpperCase() + key.slice(1)}
-              </label>
-            ))}
-          </div>
+          <DefectsFilter filters={detectionFilters} onToggle={toggleFilter} />
         </Sidebar>
         <Sidebar title="Threshold Controls">
-          <div className={styles.thresholdList}>
-            {[
-              { key: 'maskSize', label: 'Mask Size', step: 2 },
-              { key: 'subtractValue', label: 'Subtract Value', step: 1 },
-              { key: 'edgeThreshold', label: 'Edge Threshold', step: 1 },
-              { key: 'transparency', label: 'Transparency', step: 5 },
-            ].map(({ key, label, step }) => (
-              <div key={key} className={styles.thresholdItem}>
-                <span className={styles.thresholdLabel}>{label}</span>
-                <div className={styles.thresholdStepper}>
-                  <button
-                    className={styles.stepBtn}
-                    onClick={() => updateThreshold(key, -step)}
-                    aria-label={`Decrease ${label}`}
-                  >
-                    −
-                  </button>
-                  <input
-                    className={styles.thresholdInput}
-                    type="number"
-                    value={thresholds[key]}
-                    onChange={(e) => setThresholdValue(key, e.target.value)}
-                    min="0"
-                  />
-                  <button
-                    className={styles.stepBtn}
-                    onClick={() => updateThreshold(key, step)}
-                    aria-label={`Increase ${label}`}
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+          <ThresholdControls
+            thresholds={thresholds}
+            onUpdate={updateThreshold}
+            onSetValue={setThresholdValue}
+          />
         </Sidebar>
       </div>
 

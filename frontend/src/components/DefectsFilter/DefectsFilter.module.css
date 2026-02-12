@@ -1,0 +1,22 @@
+.filterList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.filterItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    padding: 0.25rem 0;
+}
+
+.filterCheckbox {
+    width: 14px;
+    height: 14px;
+    accent-color: var(--text-secondary);
+    cursor: pointer;
+}
