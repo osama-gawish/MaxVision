@@ -1,0 +1,35 @@
+/* Sidebar Header Styles */
+
+.header {
+    width: 140px;
+    min-height: 100vh;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    border-right: 1px solid var(--border-color);
+    background: var(--bg-header);
+    backdrop-filter: blur(10px);
+}
+
+.title {
+    font-size: 1rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #f80404, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+}
+
+.headerControls {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    flex: 1;
+}
+
+/* Push theme toggle to bottom */
+.headerControls> :last-child {
+    margin-top: auto;
+}
