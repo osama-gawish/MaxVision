@@ -3,11 +3,13 @@ import styles from './Canvas.module.css'
 import useWebGPU from './hooks/useWebGPU'
 import useStreaming from './hooks/useStreaming'
 import useCanvasInteractions from './hooks/useCanvasInteractions'
+import CanvasControls from '../CanvasControls'
 
-function Canvas({ recording, onStatusChange, onWsStatusChange, onFrequencyChange }) {
+function Canvas({ recording, onRecordingToggle, onStatusChange, onWsStatusChange, onFrequencyChange, frequency }) {
     const canvasRef = useRef(null)
     const containerRef = useRef(null)
     const [canvasHeight, setCanvasHeight] = useState(null)
+    const [displayStats, setDisplayStats] = useState({ totalLines: 0, zoomScale: 1.0 })
 
     const {
         gpuRef,
@@ -21,6 +23,17 @@ function Canvas({ recording, onStatusChange, onWsStatusChange, onFrequencyChange
         panOffsetXRef,
         panOffsetYRef,
     } = useWebGPU(canvasRef, onStatusChange)
+
+    // Sync ref values to display state periodically
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setDisplayStats({
+                totalLines: currentLineIndexRef.current,
+                zoomScale: zoomScaleRef.current,
+            })
+        }, 200)
+        return () => clearInterval(interval)
+    }, [currentLineIndexRef, zoomScaleRef])
 
     // Calculate canvas height from texture aspect ratio
     const recalcCanvasHeight = useCallback(() => {
@@ -46,7 +59,6 @@ function Canvas({ recording, onStatusChange, onWsStatusChange, onFrequencyChange
     const initWebGPUAndResize = useCallback(async (width, maxLines) => {
         const result = await initWebGPU(width, maxLines)
         if (result) {
-            // Wait a frame for layout to settle, then calculate height
             requestAnimationFrame(recalcCanvasHeight)
         }
         return result
@@ -83,6 +95,13 @@ function Canvas({ recording, onStatusChange, onWsStatusChange, onFrequencyChange
                 ref={canvasRef}
                 className={styles.canvas}
                 style={canvasHeight ? { height: `${canvasHeight}px` } : undefined}
+            />
+            <CanvasControls
+                recording={recording}
+                onRecordingToggle={onRecordingToggle}
+                frequency={frequency}
+                totalLines={displayStats.totalLines}
+                zoomScale={displayStats.zoomScale}
             />
         </div>
     )

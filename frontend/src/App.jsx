@@ -96,11 +96,8 @@ function App() {
       <Header
         wsConnected={wsConnected}
         gpuStatus={gpuStatus}
-        frequency={frequency}
         theme={theme}
         onThemeToggle={toggleTheme}
-        recording={recording}
-        onRecordingToggle={toggleRecording}
       />
 
       {/* Info Panel: Roll Info + Filter */}
@@ -180,9 +177,11 @@ function App() {
       <main className={styles.main}>
         <Canvas
           recording={recording}
+          onRecordingToggle={toggleRecording}
           onStatusChange={handleGpuStatusChange}
           onWsStatusChange={handleWsStatusChange}
           onFrequencyChange={handleFrequencyChange}
+          frequency={frequency}
         />
 
         {/* Panels: 2 on top, 1 wide on bottom */}

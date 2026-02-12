@@ -1,10 +1,6 @@
 import styles from './StatusBar.module.css'
 
-function StatusBar({ wsConnected, gpuStatus, frequency }) {
-    const frequencyLabel = Number.isFinite(frequency)
-        ? `${frequency} lines/sec`
-        : '—'
-
+function StatusBar({ wsConnected, gpuStatus }) {
     return (
         <div className={styles.statusBar}>
             <span className={styles.statusItem}>
@@ -14,7 +10,6 @@ function StatusBar({ wsConnected, gpuStatus, frequency }) {
                 WebSocket: {wsConnected ? 'Connected' : 'Disconnected'}
             </span>
             <span className={styles.statusItem}>{gpuStatus}</span>
-            <span className={styles.statusItem}>Freq: {frequencyLabel}</span>
         </div>
     )
 }
