@@ -3,8 +3,6 @@ import { DEFAULT_MAX_LINES } from '../shaders/lineScanShader'
 
 export default function useStreaming({
     recording,
-    onStatusChange,
-    onWsStatusChange,
     onFrequencyChange,
     gpuRef,
     initWebGPU,
@@ -37,7 +35,6 @@ export default function useStreaming({
         wsRef.current = ws
 
         ws.onopen = () => {
-            onWsStatusChange?.(true)
             onFrequencyChange?.(0)
             ws.send(JSON.stringify({ action: 'start' }))
         }
@@ -60,7 +57,6 @@ export default function useStreaming({
                     if (!gpuRef.current.gpuReady ||
                         textureWidthRef.current !== width ||
                         maxLinesRef.current !== maxLines) {
-                        onStatusChange?.('Initializing GPU...')
                         await initWebGPU(width, maxLines)
                     }
                 }
@@ -101,15 +97,13 @@ export default function useStreaming({
         }
 
         ws.onclose = () => {
-            onWsStatusChange?.(false)
             onFrequencyChange?.(0)
             wsRef.current = null
         }
 
         ws.onerror = () => {
-            onWsStatusChange?.(false)
         }
-    }, [initWebGPU, onFrequencyChange, onStatusChange, onWsStatusChange, scheduleRender, updateUniforms, gpuRef, currentLineIndexRef, textureWidthRef, maxLinesRef])
+    }, [initWebGPU, onFrequencyChange, scheduleRender, updateUniforms, gpuRef, currentLineIndexRef, textureWidthRef, maxLinesRef])
 
     const stopStreaming = useCallback(() => {
         const ws = wsRef.current
@@ -120,9 +114,8 @@ export default function useStreaming({
         }
         ws.close()
         wsRef.current = null
-        onWsStatusChange?.(false)
         onFrequencyChange?.(0)
-    }, [onFrequencyChange, onWsStatusChange])
+    }, [onFrequencyChange])
 
     useEffect(() => {
         if (recording) {

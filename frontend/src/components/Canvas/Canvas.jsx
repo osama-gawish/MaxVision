@@ -5,7 +5,7 @@ import useStreaming from './hooks/useStreaming'
 import useCanvasInteractions from './hooks/useCanvasInteractions'
 import CanvasControls from '../CanvasControls'
 
-function Canvas({ recording, onRecordingToggle, onStatusChange, onWsStatusChange, onFrequencyChange, frequency }) {
+function Canvas({ recording, onRecordingToggle, onFrequencyChange, frequency }) {
     const canvasRef = useRef(null)
     const containerRef = useRef(null)
     const [canvasHeight, setCanvasHeight] = useState(null)
@@ -22,7 +22,7 @@ function Canvas({ recording, onRecordingToggle, onStatusChange, onWsStatusChange
         zoomScaleRef,
         panOffsetXRef,
         panOffsetYRef,
-    } = useWebGPU(canvasRef, onStatusChange)
+    } = useWebGPU(canvasRef)
 
     // Sync ref values to display state periodically
     useEffect(() => {
@@ -66,8 +66,6 @@ function Canvas({ recording, onRecordingToggle, onStatusChange, onWsStatusChange
 
     useStreaming({
         recording,
-        onStatusChange,
-        onWsStatusChange,
         onFrequencyChange,
         gpuRef,
         initWebGPU: initWebGPUAndResize,

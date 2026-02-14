@@ -15,8 +15,6 @@ const DEFAULT_ROLL_INFO = {
 const GRAPH_TABS = ['Defect Count', 'Graph B', 'Graph C', 'Graph D']
 
 function App() {
-  const [gpuStatus, setGpuStatus] = useState('Initializing...')
-  const [wsConnected, setWsConnected] = useState(false)
   const [recording, setRecording] = useState(false)
   const [frequency, setFrequency] = useState(0)
   const [theme, setTheme] = useState(() => {
@@ -86,8 +84,6 @@ function App() {
   return (
     <div className={styles.dashboard}>
       <Header
-        wsConnected={wsConnected}
-        gpuStatus={gpuStatus}
         theme={theme}
         onThemeToggle={toggleTheme}
       />
@@ -113,8 +109,6 @@ function App() {
         <Canvas
           recording={recording}
           onRecordingToggle={toggleRecording}
-          onStatusChange={setGpuStatus}
-          onWsStatusChange={setWsConnected}
           onFrequencyChange={setFrequency}
           frequency={frequency}
         />
