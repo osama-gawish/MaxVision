@@ -1,0 +1,38 @@
+.rollInfoList {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+}
+
+.rollInfoList dt {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.rollInfoList dd {
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.modifyBtn {
+    width: 100%;
+    padding: 0.45rem 0;
+    font-size: 0.75rem;
+    font-weight: 500;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-secondary);
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.modifyBtn:hover {
+    color: var(--text-primary);
+    border-color: var(--text-secondary);
+}

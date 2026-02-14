@@ -1,7 +1,7 @@
 import { useCallback, useRef } from 'react'
 import { shaderCode, DEFAULT_MAX_LINES } from '../shaders/lineScanShader'
 
-export default function useWebGPU(canvasRef, onStatusChange) {
+export default function useWebGPU(canvasRef) {
     const gpuRef = useRef({
         device: null,
         context: null,
@@ -64,13 +64,11 @@ export default function useWebGPU(canvasRef, onStatusChange) {
 
     const initWebGPU = useCallback(async (width, maxLines) => {
         if (!navigator.gpu) {
-            onStatusChange?.('WebGPU not supported')
             return false
         }
 
         const adapter = await navigator.gpu.requestAdapter()
         if (!adapter) {
-            onStatusChange?.('No GPU adapter found')
             return false
         }
 
@@ -80,7 +78,6 @@ export default function useWebGPU(canvasRef, onStatusChange) {
 
         const context = canvas.getContext('webgpu')
         if (!context) {
-            onStatusChange?.('WebGPU context not available')
             return false
         }
 
@@ -159,9 +156,8 @@ export default function useWebGPU(canvasRef, onStatusChange) {
 
         updateUniforms(currentLineIndexRef.current % maxLinesRef.current, currentLineIndexRef.current)
         render()
-        onStatusChange?.('WebGPU Ready')
         return true
-    }, [canvasRef, onStatusChange, render, updateUniforms])
+    }, [canvasRef, render, updateUniforms])
 
     return {
         gpuRef,

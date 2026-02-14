@@ -29,6 +29,26 @@
     flex: 1;
 }
 
+.headerBtn {
+    padding: 0.5rem 0;
+    font-size: 0.7rem;
+    font-weight: 600;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--text-secondary);
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.headerBtn:hover {
+    color: var(--text-primary);
+    border-color: var(--text-secondary);
+}
+
 /* Push theme toggle to bottom */
 .headerControls> :last-child {
     margin-top: auto;

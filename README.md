@@ -18,39 +18,60 @@ A **WebGPU-powered line-scan vision application** for real-time image streaming 
 
 ```
 MaxVision/
-|-- app/                        # FastAPI backend
-|   |-- main.py                 # App entry point, static file serving
+|-- app/                           # FastAPI backend
+|   |-- main.py                    # App entry point, static file serving
 |   |-- routers/
-|   |   `-- websocket.py        # WebSocket endpoint for line streaming
+|   |   `-- websocket.py           # WebSocket endpoint for line streaming
 |   `-- services/
-|       `-- line_scan.py        # Image loading + line-scan streaming logic
-|-- frontend/                   # React + Vite frontend
+|       `-- line_scan.py           # Image loading + line-scan streaming logic
+|-- frontend/                      # React + Vite frontend
 |   |-- src/
-|   |   |-- App.jsx             # Root component, state management
-|   |   |-- main.jsx            # React entry point
+|   |   |-- App.jsx                # Root component, layout & state orchestration
+|   |   |-- App.module.css         # Dashboard layout styles
+|   |   |-- main.jsx               # React entry point
 |   |   `-- components/
-|   |       |-- Canvas/         # WebGPU rendering + zoom/pan
-|   |       |   |-- hooks/      # useWebGPU, useStreaming, useCanvasInteractions
-|   |       |   `-- shaders/    # WGSL shader code
-|   |       |-- Header/         # Top header and controls
-|   |       |-- StatusBar/      # WS/GPU status + frequency
-|   |       |-- RecordingToggle/# Start/Stop recording toggle
-|   |       |-- ThemeToggle/    # Dark/Light theme switch
-|   |       |-- Sidebar/        # Collapsible info panels
-|   |       `-- Panel/          # Grid content panels
-|   `-- vite.config.js          # Build output & dev proxy config
-|-- static/                     # Production build output (served by FastAPI)
-|-- tests/                      # Pytest test suite
-`-- pyproject.toml              # Python project config & dependencies
+|   |       |-- Canvas/            # WebGPU rendering + zoom/pan
+|   |       |   |-- hooks/         # useWebGPU, useStreaming, useCanvasInteractions
+|   |       |   `-- shaders/       # WGSL shader code
+|   |       |-- CanvasControls/    # Record/Detect buttons + live stats
+|   |       |-- DefectCountChart/  # Bar chart for defect counts per type
+|   |       |-- DefectsFilter/     # Checkbox filters (gel, burn, wrinkle)
+|   |       |-- Header/            # Vertical sidebar header (title, status, theme)
+|   |       |-- Panel/             # Grid content panels (supports tabs)
+|   |       |-- RollInfoModal/     # Modal form for editing roll information
+|   |       |-- RollInfoSidebar/   # Roll data display + modify button
+|   |       |-- Sidebar/           # Collapsible info panels
+|   |       |-- StatusBar/         # WS/GPU connection status
+|   |       |-- ThemeToggle/       # Dark/Light theme switch
+|   |       `-- ThresholdControls/ # Stepper controls for detection thresholds
+|   `-- vite.config.js             # Build output & dev proxy config
+|-- static/                        # Production build output (served by FastAPI)
+|-- tests/                         # Pytest test suite
+`-- pyproject.toml                 # Python project config & dependencies
 ```
 
 ## Architecture
 
 - React (Vite dev server `:5173`) renders the UI and the WebGPU canvas.
-- The recording toggle opens a WebSocket to FastAPI at `/ws/stream`.
+- The Record button (in Canvas Controls) opens a WebSocket to FastAPI at `/ws/stream`.
 - FastAPI streams raw grayscale bytes (1 byte/pixel) as binary WebSocket frames.
 - The frontend writes them directly into an `r8unorm` ring-buffer GPU texture via `writeTexture`.
+- Render calls are throttled so only one `requestAnimationFrame` is queued at a time.
 - In production, FastAPI serves the built React app from `static/`.
+
+## Page Layout
+
+```
+┌────────┬────────┬─────────────────────┬──────────────────────────────┐
+│        │        │                     │ Defects Thumbnails │ Graph 1 │
+│        │ Info   │      Canvas         ├────────────────────┴─────────┤
+│ Header │ Panel  │   (WebGPU r8unorm)  │ [Defect Count | B | C | D]  │
+│ (vert) │(200px) │                     │  (tabbed graph panel)       │
+│        │        ├─────────────────────┤                             │
+│        │        │  Canvas Controls    │                             │
+│        │        │  (Record + Stats)   │                             │
+└────────┴────────┴─────────────────────┴──────────────────────────────┘
+```
 
 ## Getting Started
 
@@ -124,10 +145,15 @@ Server -> Client (binary frames)
 
 ## Key Features
 
-- **WebGPU Rendering** — hardware-accelerated `r8unorm` canvas for grayscale line-scan display
+- **WebGPU Rendering** — hardware-accelerated `r8unorm` canvas sized to the texture aspect ratio
 - **Binary Streaming** — raw grayscale bytes over binary WebSocket, zero encode/decode overhead
-- **Recording Toggle** — UI control to start/stop streaming and rendering
+- **Render Throttling** — only one `requestAnimationFrame` queued at a time for high-frequency streams
+- **Canvas Controls** — Record/Detect Defects buttons with live stats (frequency, total lines, zoom)
+- **Defect Count Chart** — CSS bar chart showing per-type defect counts (Gel, Burn, Wrinkle)
+- **Tabbed Panels** — Panel component supports static titles or switchable tab bars
+- **Roll Info Modal** — form to set Roll ID, width, thickness, and color
+- **Defects Filter** — toggle detection types on/off via checkboxes
+- **Threshold Controls** — stepper inputs for mask size, subtract value, edge threshold, transparency
 - **Zoom + Pan** — interactive inspection of the ring-buffer texture
-- **Frequency Indicator** — live lines/sec display in the StatusBar
 - **Dark / Light Theme** — persisted in `localStorage`
-- **Modular Components** — Canvas is composed from custom hooks (`useWebGPU`, `useStreaming`, `useCanvasInteractions`); all UI elements use CSS Modules
+- **Modular Components** — Canvas composed from custom hooks; all UI uses CSS Modules
