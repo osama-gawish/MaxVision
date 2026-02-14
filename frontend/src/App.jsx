@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import { Header, Canvas, Sidebar, Panel, RollInfoModal, DefectCountChart } from './components'
+import DefectStatsTable from './components/DefectStatsTable'
 import RollInfoSidebar from './components/RollInfoSidebar'
 import DefectsFilter from './components/DefectsFilter'
 import ThresholdControls from './components/ThresholdControls'
@@ -12,7 +13,7 @@ const DEFAULT_ROLL_INFO = {
   color: '',
 }
 
-const GRAPH_TABS = ['Defect Count', 'Graph B', 'Graph C', 'Graph D']
+const GRAPH_TABS = ['Defect Count', 'Defect Statistics', 'Graph C', 'Graph D']
 
 function App() {
   const [recording, setRecording] = useState(false)
@@ -47,6 +48,13 @@ function App() {
     burn: 5,
     wrinkle: 8,
   })
+
+  // Defect statistics per type (will be driven by backend later)
+  const [defectStats] = useState([
+    { key: 'gel', name: 'Gel', totalCount: 12, average: 2.4, maxCountPerM: 5, locationOfMax: '14.2 m' },
+    { key: 'burn', name: 'Burn', totalCount: 5, average: 1.0, maxCountPerM: 3, locationOfMax: '8.7 m' },
+    { key: 'wrinkle', name: 'Wrinkle', totalCount: 8, average: 1.6, maxCountPerM: 4, locationOfMax: '22.1 m' },
+  ])
 
   const updateThreshold = useCallback((key, delta) => {
     setThresholds(prev => ({
@@ -129,7 +137,10 @@ function App() {
             {activeGraph === 'Defect Count' && (
               <DefectCountChart defectCounts={defectCounts} />
             )}
-            {activeGraph !== 'Defect Count' && (
+            {activeGraph === 'Defect Statistics' && (
+              <DefectStatsTable defectStats={defectStats} />
+            )}
+            {activeGraph !== 'Defect Count' && activeGraph !== 'Defect Statistics' && (
               <p>{activeGraph} content</p>
             )}
           </Panel>

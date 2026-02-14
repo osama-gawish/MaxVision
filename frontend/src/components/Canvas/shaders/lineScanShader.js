@@ -1,6 +1,6 @@
 export const DEFAULT_MAX_LINES = 2048
 export const ZOOM_FACTOR = 1.1
-export const MAX_ZOOM = 10.0
+export const MAX_ZOOM = 20.0
 export const MIN_ZOOM = 1.0
 
 export const shaderCode = `
