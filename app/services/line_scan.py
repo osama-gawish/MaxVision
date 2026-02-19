@@ -25,16 +25,13 @@ def _load_image():
                 img_gray = img_gray[:, :MAX_WIDTH]
             return img_gray
 
-    # Fallback dummy image
-    return np.zeros((1200, MAX_WIDTH), dtype=np.uint8)
-
 
 gray_image = _load_image()
 line_width = int(gray_image.shape[1])
 img_height = int(gray_image.shape[0])
 
 
-def next_line_raw() -> tuple[bytes, int]:
+def next_line_raw():
     """Return next line as raw grayscale bytes and the updated line index."""
     global current_line_index
 
@@ -43,4 +40,4 @@ def next_line_raw() -> tuple[bytes, int]:
     if current_line_index >= img_height:
         current_line_index = 0
 
-    return line.tobytes(), current_line_index
+    return line.tobytes()

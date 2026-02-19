@@ -18,9 +18,9 @@ async def websocket_stream(websocket: WebSocket):
 
     async def stream_lines():
         while not stop_event.is_set():
-            line_bytes, line_index = line_scan.next_line_raw()
+            line_bytes = line_scan.next_line_raw()
             await websocket.send_bytes(line_bytes)
-            await asyncio.sleep(0.001)
+            await asyncio.sleep(0)
 
     try:
         while True:
